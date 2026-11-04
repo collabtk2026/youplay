@@ -190,7 +190,7 @@ SDK 없이 Kotlin 문법·타입만 검사하는 방법(이번 환경에서 쓴 
 | T-16 | 주간 "임시함 정리" 알림 | Android WorkManager 또는 AlarmManager, iOS UNUserNotification | 설정에서 켜고 끄기 | ☐ |
 | T-17 | iOS AppIcon, 실기기 스크린샷(E-09) | `ios/BgPlay/Assets.xcassets`, `project.yml`, `DOCS/images` | 빌드 경고 없음 | ☐ |
 | T-18 | 독립 저장소 분리와 보관 | — | `bgplay-main` 브랜치에 push, Mappin 작업 브랜치에서 `bgplay/` 제거 후 안내만 남김 | ✅ LOG #6 |
-| T-19 | 별도 GitHub 저장소로 이전 | — | `collabtk2026/youplay` `main`에 push | ✅ LOG #7 |
+| T-19 | 별도 GitHub 저장소로 이전 | — | `collabtk2026/youplay` `main`에 push(2026-11-04 완료, 새로 clone해서 확인) | ✅ LOG #7 |
 | T-26 | **정식 앱 ID와 내부 이름 확정**(Android `applicationId`/`namespace`, iOS 번들 ID, Xcode 타깃/폴더, `bgplay.js`·`BgPlayNative`·`__bgplay`·`bgplay://` 이름 변경 여부) | 스토어에 한 번 올린 ID는 바꿀 수 없음. 이름 상표 검토(D-13) 뒤 | ID 결정 → 일괄 변경 + 테스트 + 양 플랫폼 빌드 | ☐ |
 
 ### 6.3 스토어 트랙 (`store` 빌드 — 근거: STORE_RELEASE §3·§5·§6)

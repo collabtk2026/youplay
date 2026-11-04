@@ -20,6 +20,7 @@
 - `collabtk2026/youplay`로의 push는 **거부됨**(HTTP 403). 이 저장소에 Claude GitHub App이 설치돼 있지 않음.
 - 해결 방법: https://claude.ai/connect-github 에서 GitHub를 다시 연결하고, youplay 저장소에 Claude GitHub App을 설치(조직 소유자 권한 필요). 그 뒤 `git push -u origin main`.
 - 그때까지는 같은 커밋을 `collabtk2026/mappin`의 `bgplay-main` 브랜치에 임시로 보관함(빨리 감기 push). 접근이 해결되면 youplay `main`이 정본이다.
+- **2026-11-04 해결**: 사용자가 GitHub App 권한을 모든 저장소로 넓힌 뒤 다시 시도해 `main` push에 성공함(`e8d8e9c`까지). 새로 clone해서 커밋 12개를 확인했고 테스트는 12/12, 18/18. **이제 이 저장소(`collabtk2026/youplay` `main`)가 정본이다.** mappin의 `bgplay-main`은 과거 보관용으로만 남음.
 
 ---
 
