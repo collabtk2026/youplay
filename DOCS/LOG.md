@@ -4,6 +4,20 @@
 
 ---
 
+## 2026-11-04 #8 — 프로젝트 내용 파악 (코드 변경 없음)
+
+**요청**: "youplay 내용파악". 저장소 전체 구조와 현재 상태를 정리해 달라는 요청.
+
+**한 일**: HANDOFF, OVERVIEW, LOG, ENV_PENDING을 읽고 코드 규모를 확인함(공용 JS 약 1,660줄, Android Kotlin 약 1,420줄, iOS Swift 약 1,010줄). 사용자에게 요약 보고.
+
+**환경 점검(ENV_PENDING)**: 이 세션도 이전과 같다. `m.youtube.com`, `dl.google.com`, `chromium.googlesource.com` 연결 실패. `maven.google.com`은 응답하지만 `dl.google.com`으로 301 리다이렉트돼 결국 막힘. Android SDK와 Xcode 없음. 풀 수 있는 E-xx 항목 없음.
+
+**검증**: `node shared/test/bgplay.test.mjs` 12/12, `node shared/test/library.test.mjs` 18/18.
+
+**남은 일**: 변화 없음(HANDOFF §6 백로그 그대로).
+
+---
+
 ## 2026-11-04 #7 — 새 저장소 `collabtk2026/youplay`로 이전, 앱 이름 Youplay
 
 **요청**: 앱을 별도 저장소로 옮김. 앱 이름은 **Youplay**. 사용자가 만든 `youplay` 저장소로 앱 관련 모든 것을 옮기고 거기서 계속 작업.
