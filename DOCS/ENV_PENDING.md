@@ -37,8 +37,9 @@
 ## 1. 환경 준비 체크리스트
 
 - [ ] 저장소 받기: `git clone https://github.com/collabtk2026/youplay` 이하 모든 경로는 저장소 루트 기준이다.
-- [ ] Node 22+, `npm i -g playwright` 또는 저장소 밖에서 `npx playwright install chromium`
-  - 공용 테스트는 `require('playwright')`를 쓴다. 전역 설치나 `NODE_PATH`를 맞춘다.
+- [ ] Node 22+. 저장소 루트에서 `npm i --no-save playwright` → `npx playwright install chromium`
+  - 공용 테스트는 `createRequire`로 `require('playwright')`를 하므로 **저장소 루트(또는 상위)의 `node_modules`**에 있어야 한다. 전역 설치(`npm i -g`)만으로는 못 찾는다(`NODE_PATH`를 따로 맞추면 가능). `node_modules/`는 gitignore.
+  - 컴퓨터별 순서와 Windows 주의사항은 [HANDOFF ★ 절](HANDOFF.md#-내-컴퓨터에서-이어서-하기-클라우드-세션--로컬-pcmac)
 - [ ] **Android**: Android Studio(최신), SDK Platform 35, Build-Tools, JDK 17+, USB 디버깅을 켠 기기
 - [ ] **iOS**: Mac, Xcode 15 이상, `brew install xcodegen`, Apple ID(무료 Personal Team 가능), iPhone, Safari 웹 인스펙터 사용 설정(iPhone 설정 → Safari → 고급 → 웹 인스펙터)
 - [ ] 테스트용 YouTube 계정 2개 권장: **Premium 1개, 비 Premium 1개**(2026 차단 비교용)

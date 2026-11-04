@@ -1,0 +1,6 @@
+# Windows에서 받아도 셸 스크립트가 깨지지 않게 줄바꿈을 고정한다(HANDOFF "내 컴퓨터에서 이어서 하기").
+*.sh     text eol=lf
+gradlew  text eol=lf
+*.bat    -text
+*.jar    binary
+*.png    binary

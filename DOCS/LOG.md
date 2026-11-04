@@ -4,6 +4,24 @@
 
 ---
 
+## 2026-11-04 #9 — 로컬 컴퓨터에서 이어서 작업할 수 있게 인수인계 정리
+
+**요청**: 클라우드에서 하던 작업을 사용자 컴퓨터에서 이어서 할 수 있도록 HANDOFF에 관련 내용을 기록.
+
+**한 일**
+- [HANDOFF.md](HANDOFF.md) 맨 앞에 **★ 내 컴퓨터에서 이어서 하기** 절 추가: A 멈춘 지점, B 어느 브랜치가 최신인지와 받는 법, C 컴퓨터별(아무 PC / Android Studio / Android 기기 / Mac / iPhone) 준비와 첫 작업 순서(T-xx ↔ E-xx 대응), Windows 주의, D 로컬 Claude Code로 이어 가는 법(첫 요청 예, 브랜치 운용), E 결과를 남기는 곳.
+- [ENV_PENDING §1](ENV_PENDING.md)의 Playwright 설치 안내 수정: 테스트가 `createRequire`를 써서 전역 설치로는 `playwright`를 못 찾는다. 저장소 루트에 `npm i --no-save playwright`로 바꿈(package.json이 생기지 않는 것을 확인함).
+- `.gitignore`에 `node_modules/` 추가. `.gitattributes` 추가(`*.sh`, `gradlew`는 LF로 고정, `*.bat`은 현재 CRLF 그대로, jar/png는 binary). Windows에서 `core.autocrlf`로 받아도 bash 스크립트가 깨지지 않게 하려는 것. 기존 파일의 줄바꿈은 바뀌지 않음(`git status` 확인).
+- DOCS/README 목록 설명 갱신.
+
+**결정**: 로컬에서는 `main`에서 작업 브랜치를 만들고 PR로 합치는 것을 권장(클라우드 "지정 브랜치" 규칙은 클라우드 전용).
+
+**검증**: 코드 변경 없음. `node shared/test/bgplay.test.mjs` 12/12, `library.test.mjs` 18/18.
+
+**남은 일**: 이 브랜치(`ccr-0a834627-ppfmaz`)를 `main`에 합치기(사용자 요청 시 PR). 그다음은 로컬에서 T-01(E-04)부터.
+
+---
+
 ## 2026-11-04 #8 — 프로젝트 내용 파악 (코드 변경 없음)
 
 **요청**: "youplay 내용파악". 저장소 전체 구조와 현재 상태를 정리해 달라는 요청.

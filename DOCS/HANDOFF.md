@@ -3,15 +3,90 @@
 > 이 문서는 **다른 AI 모델이나 개발자가 이 문서만 읽고 이어서 작업할 수 있도록** 쓴 것이다. 지금까지 한 일, 앞으로 할 일, 점검할 것을 담는다.
 > 문서 목록: [README](README.md) · [작업 로그](LOG.md) · [전체 개요](OVERVIEW.md)
 >
-> 마지막 갱신: 2026-11-04 · **저장소: [`collabtk2026/youplay`](https://github.com/collabtk2026/youplay), 기본 브랜치 `main`**. 받기: `git clone https://github.com/collabtk2026/youplay`.
+> 마지막 갱신: 2026-11-04(LOG #9: ★ 로컬에서 이어서 하기 절 추가) · **저장소: [`collabtk2026/youplay`](https://github.com/collabtk2026/youplay), 기본 브랜치 `main`**. 받기: `git clone https://github.com/collabtk2026/youplay`.
 > 앱 이름은 **Youplay**(구 BgPlay). 내부 식별자(`io.github.bgplay`, `bgplay.js`, `BgPlayNative`, Xcode 타깃 `BgPlay`, `bgplay://`)는 아직 옛 이름이다(D-13, T-26).
 >
 > 이력: `collabtk2026/mappin`의 `bgplay/` 디렉터리 → 2026-11-03 `git subtree split`으로 분리(`bgplay-main` 브랜치) → 2026-11-04 이 저장소로 이전. Mappin과는 무관하다.
 
 ---
 
+## ★ 내 컴퓨터에서 이어서 하기 (클라우드 세션 → 로컬 PC/Mac)
+
+> 지금까지의 작업은 모두 Claude Code **클라우드 세션**(Linux 컨테이너, Android SDK·Xcode·기기 없음, YouTube 차단)에서 했다. 그래서 **코드는 1차 완성이지만 빌드와 실제 동작은 한 번도 확인하지 못했다.** 로컬 컴퓨터의 첫 목적은 바로 이 확인이다.
+
+### A. 멈춘 지점 (2026-11-04)
+
+- **진행 중인 작업 없음.** 커밋하지 않은 변경이나 반쯤 고친 코드도 없다. 마지막 기능 작업은 LOG #4(스토어 검토), 그 뒤로는 저장소 이전과 문서 정리만 했다(LOG #5–#9).
+- 공용 테스트: `bgplay.test.mjs` 12/12, `library.test.mjs` 18/18(클라우드에서 2026-11-04 재확인)
+- 다음 할 일은 **환경 확인 작업**이다(§6.1 T-01~T-06 = ENV_PENDING E-01~E-08). 기능 작업(T-07 이후)은 이 결과를 보고 정한다.
+
+### B. 저장소 받기: 어느 브랜치가 최신인가
+
+| 브랜치 | 내용 |
+|---|---|
+| `main` | 정본. LOG #7(`998fe9f`)까지 |
+| `ccr-0a834627-ppfmaz` | 클라우드 세션 작업 브랜치. `main` + LOG #8·#9(이 절, `.gitattributes`, `.gitignore`의 `node_modules/`). **아직 `main`에 합치지 않았다** |
+
+```bash
+git clone https://github.com/collabtk2026/youplay
+cd youplay
+git checkout ccr-0a834627-ppfmaz        # main에 합쳤다면 이 줄은 필요 없음
+git log --oneline -3                    # 맨 위가 LOG #9 커밋인지 확인
+```
+
+> 권장: GitHub에서 `ccr-0a834627-ppfmaz` → `main` PR을 만들어 합치고, 로컬에서는 `main`에서 시작한다. 클라우드 세션에서 "PR 만들어줘"라고 하면 만들어 준다.
+
+### C. 컴퓨터별 준비와 첫 작업
+
+모든 컴퓨터에서 공통으로 먼저 한다(Node 22 이상).
+
+```bash
+# 저장소 루트에서. package.json은 만들지 않는다(node_modules/는 gitignore)
+npm i --no-save playwright
+npx playwright install chromium
+node shared/test/bgplay.test.mjs        # 기대 12/12
+node shared/test/library.test.mjs       # 기대 18/18
+```
+
+> 테스트는 `createRequire`로 `playwright`를 찾는다. 전역 설치(`npm i -g`)만 하면 못 찾으니 위처럼 저장소 루트에 설치한다.
+
+| 가진 것 | 할 일(순서대로) | 상세 |
+|---|---|---|
+| **아무 PC**(Windows·Linux·Mac, 인터넷 됨) | ① **T-01 / E-04**: `HEADED=1 node shared/test/live-youtube.mjs`. 실제 YouTube에서 셀렉터·메타데이터·폴리필을 본다. 약 30분이고 기기가 필요 없어 **가장 먼저** 한다. ② E-06(Chromium 소스), E-07(막혔던 웹 출처 원문) | [ENV_PENDING E-04](ENV_PENDING.md), E-06, E-07 |
+| **Android Studio** | ③ **T-02 / E-01**: `android/` 폴더를 열고 Gradle Sync → `scripts/check-android.sh`(빌드, APK assets 확인, lint). AGP·Kotlin 버전 오류가 나면 E-01의 "예상 오류와 대처" 표를 본다 | [ENV_PENDING E-01](ENV_PENDING.md) |
+| **+ Android 기기**(13 이상) | ④ **T-03 / E-02·E-05**: `scripts/check-android.sh --install` → [TEST_PLAN](TEST_PLAN.md) §1·§2. **WebView 안에서 Google 로그인이 되는지를 1순위로** 본다 | ENV_PENDING E-02, E-05 |
+| **Mac + Xcode 15 이상** | ⑤ **T-04 / E-03**: `brew install xcodegen` → `scripts/check-ios.sh`. Swift 코드는 처음 컴파일하는 것이라 오류가 나는 게 정상이다. 오류를 고치고 LOG에 남긴다 | [ENV_PENDING E-03](ENV_PENDING.md) |
+| **+ iPhone** | ⑥ **T-05**: Xcode에서 Team 지정 → 실기기 실행 → TEST_PLAN §1·§2 | ENV_PENDING E-03 |
+| ④·⑥ 결과 | ⑦ **T-06 / E-08**: 결정 4건 확정 → DECISIONS | ENV_PENDING E-08 |
+
+**Windows 주의**
+- `scripts/*.sh`는 bash 스크립트다. Git Bash나 WSL에서 실행한다. Android 빌드만 할 거면 `cd android && gradlew.bat assembleDebug`도 된다.
+- `.gitattributes`로 `*.sh`, `gradlew`는 LF로 고정했다. LOG #9 이전 커밋을 `core.autocrlf=true`로 받았다면 다시 clone한다.
+- `ANDROID_HOME`이 없으면 Android Studio로 `android/`를 한 번 열면 `android/local.properties`(`sdk.dir`)가 생긴다. 이 파일은 커밋하지 않는다.
+
+### D. 로컬에서 Claude Code로 이어 갈 때
+
+- 저장소 루트에서 `claude`를 실행한다. `CLAUDE.md` → `AGENTS.md` → 이 문서 순서로 규칙이 자동으로 적용된다.
+- 첫 요청 예: **"HANDOFF와 ENV_PENDING 읽고, 이 컴퓨터에서 할 수 있는 항목부터 진행해줘. 결과는 DOCS에 기록해줘."**
+- 브랜치: 클라우드 세션의 "지정 브랜치에만 push" 규칙은 클라우드 전용이다. 로컬에서는 `main`에서 작업 브랜치(예: `local/android-build`)를 만들어 push하고 PR로 합치는 것을 권장한다.
+- 클라우드와 로컬을 번갈아 쓸 때는 시작할 때마다 `git pull`, 끝날 때마다 commit + push를 한다. 상태를 넘기는 통로는 **git에 올라간 DOCS뿐**이다.
+
+### E. 결과를 남기는 곳 (다음 사람이 이어받을 수 있게)
+
+| 결과 | 기록할 곳 |
+|---|---|
+| 어떤 작업을 했는지 | `LOG.md` 맨 위에 새 항목(#10부터). 실행한 컴퓨터·OS·기기 모델·Android/iOS 버전을 적는다 |
+| E-xx를 끝냈을 때 | `ENV_PENDING.md` §0 표의 상태 칸(☐ → ✅/❌ + 날짜 + 한 줄 메모) |
+| T-xx를 끝냈을 때 | 이 문서 §6 상태 칸 + LOG 번호. §2 상태표도 고친다 |
+| 실기기 체크리스트 | `TEST_PLAN.md` 체크박스 |
+| `live-report.json`, `scripts/out/*.log` | **gitignore라 올라가지 않는다.** 판정에 필요한 값과 오류 메시지는 LOG에 옮겨 적는다 |
+| 스크린샷 | `DOCS/images/` |
+
+---
+
 ## 0. 시작 순서
 
+0. **로컬 컴퓨터에서 처음 시작한다면 위 ★ 절부터**
 1. 이 문서 §1–§4(무엇을, 어디에, 하지 말 것)
 2. [OVERVIEW.md](OVERVIEW.md): 기능 상태 한 장
 3. 작업 환경에 맞는 문서
